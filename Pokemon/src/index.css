@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+@theme {
+    --font-outfit: "Outfit", sans-serif; 
+  }
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(0%);
+    }
+
+    100% {
+        transform: translateY(-150%);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(0%);
+    }
+
+    100% {
+        transform: translateY(150%);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 2s ease-in-out forwards;
+}
+
+.animate-slide-down {
+    animation: slideDown 2s ease-in-out forwards;
+}

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Connexion() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const navigate = useNavigate();  
 
     function handleClick(e: { preventDefault: () => void; }) {
         e.preventDefault();
@@ -26,7 +28,18 @@ function Connexion() {
         }
 
         if (!hasError) {
-            alert("Valide");
+            axios.post("http://localhost:5000/api/login", { email, password })
+                .then((response) => {
+                    const { token } = response.data;
+                     localStorage.setItem("token", token);
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 1000);
+                })
+                .catch((error) => {
+                    const errorMessage = error.response?.data?.error || "Erreur lors de la connexion";
+                    alert(errorMessage);
+                });
         }
     }
 
