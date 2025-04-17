@@ -173,5 +173,5 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 server.listen(PORT, () => {
-    console.log(`🚀 Serveur backend lancé sur http://localhost:${PORT}`);
+    // console.log(`🚀 Serveur backend lancé sur http://localhost:${PORT}`);
 });

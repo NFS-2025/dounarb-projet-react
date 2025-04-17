@@ -18,7 +18,7 @@ function UsersOnline() {
 
     useEffect(() => {
         // 1. Requête initiale REST
-        axios.get("http://localhost:5000/api/online-users")
+        axios.get("https://dounarb-projet-react.onrender.com/api/online-users")
             .then((res) => {
                 setUsers(res.data);
                 setLoading(false);
@@ -29,7 +29,7 @@ function UsersOnline() {
             });
 
         // 2. Connexion WebSocket
-        socket = io("http://localhost:5000");
+        socket = io("https://dounarb-projet-react.onrender.com");
 
         const token = localStorage.getItem("token");
         if (token && socket) {
