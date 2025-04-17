@@ -28,8 +28,8 @@ mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-.then(() => console.log('✅ Connecté à MongoDB Atlas'))
-.catch((err) => console.error('❌ Erreur MongoDB :', err));
+    .then(() => console.log('✅ Connecté à MongoDB Atlas'))
+    .catch((err) => console.error('❌ Erreur MongoDB :', err));
 
 const userSchema = new mongoose.Schema({
     nom: String,
@@ -81,6 +81,27 @@ app.post('/api/login', async (req, res) => {
         res.status(400).json({ error: 'Erreur connexion', message: err.message });
     }
 });
+
+// ✅ Inscription
+app.post('/api/register', async (req, res) => {
+    const { nom, prenom, age, email, password } = req.body;
+    if (!nom || !prenom || !age || !email || !password)
+        return res.status(400).json({ error: 'Tous les champs sont requis.' });
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) return res.status(400).json({ error: 'Email déjà utilisé.' });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ nom, prenom, age, email, password: hashedPassword });
+        await newUser.save();
+
+        res.status(201).json({ message: 'Inscription réussie' });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur', message: err.message });
+    }
+});
+
 
 // 🔍 Liste à la demande
 app.get('/api/online-users', (req, res) => {
