@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,8 +8,8 @@ const jwt = require('jsonwebtoken');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const onlineUsers = new Map(); // userId → user info
-const connectedSockets = new Map(); // socket.id → userId
+const onlineUsers = new Map();
+const connectedSockets = new Map();
 
 const app = express();
 const server = http.createServer(app);
@@ -17,17 +18,18 @@ const io = new Server(server, {
         origin: '*',
     }
 });
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/Pokédex', {
+// ✅ Connexion à MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-    .then(() => console.log('✅ Connexion à MongoDB réussie !'))
-    .catch((err) => console.error('Erreur MongoDB :', err));
+.then(() => console.log('✅ Connecté à MongoDB Atlas'))
+.catch((err) => console.error('❌ Erreur MongoDB :', err));
 
 const userSchema = new mongoose.Schema({
     nom: String,
@@ -39,17 +41,17 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// ✅ Authentifie un JWT et retourne l'userId
+// ✅ Vérifie le JWT
 function verifyToken(token) {
     try {
-        const decoded = jwt.verify(token, 'ton_secret');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded.userId;
     } catch {
         return null;
     }
 }
 
-// 🔥 Emit à tous les clients la liste à jour
+// 🔁 Envoie la liste des utilisateurs connectés
 function emitOnlineUsers() {
     const users = Array.from(onlineUsers.entries()).map(([userId, user]) => ({
         id: userId,
@@ -72,7 +74,7 @@ app.post('/api/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Mot de passe incorrect.' });
 
-        const token = jwt.sign({ userId: user._id }, 'ton_secret', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.status(200).json({ message: 'Connexion réussie', token });
     } catch (err) {
@@ -80,7 +82,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// 🌍 Récupération à la demande
+// 🔍 Liste à la demande
 app.get('/api/online-users', (req, res) => {
     const users = Array.from(onlineUsers.entries()).map(([userId, user]) => ({
         id: userId,
@@ -91,7 +93,7 @@ app.get('/api/online-users', (req, res) => {
     res.json(users);
 });
 
-// ⚡ Gestion WebSocket
+// ⚡ WebSockets
 io.on('connection', (socket) => {
     console.log('🟢 Nouvelle connexion socket');
 
@@ -102,7 +104,6 @@ io.on('connection', (socket) => {
             return;
         }
 
-        // Récupère les infos utilisateur
         const user = await User.findById(userId);
         if (!user) {
             socket.disconnect();
@@ -125,7 +126,6 @@ io.on('connection', (socket) => {
         if (userId) {
             connectedSockets.delete(socket.id);
 
-            // Vérifie si d'autres sockets utilisent ce userId
             const stillConnected = [...connectedSockets.values()].includes(userId);
             if (!stillConnected) {
                 onlineUsers.delete(userId);
@@ -137,10 +137,10 @@ io.on('connection', (socket) => {
     });
 });
 
-// 🕐 Nettoyage auto toutes les 5 min
+// 🧹 Auto-clean
 setInterval(() => {
     const now = Date.now();
-    const TIMEOUT = 30 * 60 * 1000; // 30 min
+    const TIMEOUT = 30 * 60 * 1000;
 
     for (const [userId, user] of onlineUsers.entries()) {
         if (now - user.lastSeen > TIMEOUT) {
@@ -152,5 +152,5 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 server.listen(PORT, () => {
-    console.log(`🚀 Serveur backend WebSocket lancé sur http://localhost:${PORT}`);
+    console.log(`🚀 Serveur backend lancé sur http://localhost:${PORT}`);
 });
