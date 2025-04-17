@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import CardAccueil from '../components/accueil/card';
+import { useEffect, useState } from "react";
+import CardAccueil from '../components/accueil/Card';
 
 function Accueil() {
-    const [data, setData] = useState(null);
+
+
+
+    const [data, setData] = useState<{ url: string; name: string }[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true); // 👈 ajout de l'état pour l'anim
 
@@ -19,7 +22,7 @@ function Accueil() {
             .catch(error => console.error(error));
     }, []);
 
-    const handleCardClick = async (id: string, name: string) => {
+    const handleCardClick = async (id: string) => {
         try {
             const [pokemonRes, speciesRes] = await Promise.all([
                 fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
@@ -81,7 +84,7 @@ function Accueil() {
                                             key={index}
                                             name={pokemon.name}
                                             id={id}
-                                            onClick={() => handleCardClick(id, pokemon.name)}
+                                            onClick={() => handleCardClick(id)}
                                         />
                                     );
                                 })}

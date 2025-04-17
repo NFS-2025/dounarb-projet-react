@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Accueil from "./pages/Accueil";
 import APropos from "./pages/APropos";
 import PageErreur from "./pages/PageErreur";
