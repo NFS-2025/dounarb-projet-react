@@ -1,43 +1,56 @@
 import Router from './Router'
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './App.css'
 
 function App() {
-	const isLoggedIn = !!localStorage.getItem("token"); // lire le token, vrai si présent
+	const isLoggedIn = !!localStorage.getItem("token");
+	const navigate = useNavigate();
+
 
 	return (
 		<>
 			<div className="navbar bg-red-500 shadow-sm z-50 fixed top-0">
 				<div className="navbar-start text-white">
 					<ul className="menu menu-horizontal px-1 text-white">
-						<li><a className="font-outfit" href="/">Accueil</a></li>
-						<li><a className="font-outfit" href="/a-propos">A propos</a></li>
+						<li><Link className="font-outfit" to="/">Accueil</Link></li>
+						<li><Link className="font-outfit" to="/a-propos">A propos</Link></li>
 					</ul>
 				</div>
 				<div className="navbar-center hidden lg:flex">
-					<a href="/" className="ml-8 btn btn-ghost border-0 hover:scale-110 duration-100 hover:bg-transparent hover:border-0 hover:shadow-none text-xl">
-						<img src="./public/pokemon-svgrepo-com.svg" className='w-32' alt="" />
-					</a>
+					<Link
+						to="/"
+						className="ml-8 btn btn-ghost border-0 hover:scale-110 duration-100 hover:bg-transparent hover:border-0 hover:shadow-none text-xl"
+					>
+						<img src="./pokemon-svgrepo-com.svg" className='w-32' alt="" />
+					</Link>
 				</div>
 				<div className="navbar-end">
 					<ul className="menu menu-horizontal px-1 text-white">
 						{!isLoggedIn ? (
 							<>
-								<li><a className="font-outfit" href="/connexion">Connexion</a></li>
-								<li><a className="font-outfit" href="/inscription">Inscription</a></li>
+								<li>
+									<Link className="font-outfit" to={"/connexion"}>Connexion</Link>
+								</li>
+								<li>
+									<Link className="font-outfit" to={"/inscription"}>Inscription</Link>
+								</li>
 							</>
 						) : (
 							<>
-								<li><a className="font-outfit" href="/user_en_ligne">Utilisateurs</a></li>
+								<li>
+									<Link className="font-outfit" to={"/user_en_ligne"}>Utilisateurs</Link></li>
 								<li>
 									<button
 										className="font-outfit"
 										onClick={() => {
 											localStorage.removeItem("token");
-											window.location.reload(); // pour forcer le refresh
+											navigate("/login"); // Redirige vers la page de connexion
 										}}
 									>
 										Déconnexion
 									</button>
+
 								</li>
 							</>
 						)}

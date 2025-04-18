@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Accueil from "./pages/Accueil";
 import APropos from "./pages/APropos";
 import PageErreur from "./pages/PageErreur";
@@ -9,16 +9,14 @@ import UsersOnline from "./pages/UsersOnline";
 
 const Router: React.FC = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Accueil />} />
-                <Route path="/a-propos" element={<APropos />} />
-                <Route path="/*" element={<PageErreur />} />
-                <Route path="/connexion" element={<Connexion />} />
-                <Route path="/inscription" element={<Inscription />} />
-                <Route path="/user_en_ligne" element={<UsersOnline />} />
-            </Routes>
-        </BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Accueil />} />
+            <Route path="/a-propos" element={<APropos />} />
+            <Route path="/*" element={<PageErreur />} />
+            <Route path="/connexion" element={<Connexion />} />
+            <Route path="/inscription" element={<Inscription />} />
+            <Route path="/user_en_ligne" element={<UsersOnline />} />
+        </Routes>
     )
 }
 
