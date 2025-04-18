@@ -98,7 +98,7 @@ function Accueil() {
                     {selectedPokemon ? (
                         <>
                             <h2 className="text-2xl font-bold text-black text-center mt-4 capitalize">
-                                {selectedPokemon.name}
+                              #{selectedPokemon.id} | {selectedPokemon.name}
                             </h2>
                             <p className="text-center text-gray-600 italic mx-4 mt-2">{selectedPokemon.description}</p>
                             <div className="flex justify-center mt-4 relative">

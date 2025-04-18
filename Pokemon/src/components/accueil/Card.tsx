@@ -31,16 +31,24 @@ function CardAccueil({ name, id, onClick }: CardAccueilProps) {
 
     return (
         <div
-            onClick={handleClick}
-            className="relative w-1/6 bg-gradient-to-b from-transparent via-white to-gray-200 flex flex-col shadow-lg rounded-xl cursor-pointer hover:shadow-blue-200 transition">
-            <div className="">
-                <img src={image} className="scale-88" alt={frenchName} />
-            </div>
-            <span className="absolute top-2 right-2 font-semibold">#{id}</span>
-            <div className="py-2 mt-4 w-full rounded-b-2xl">
-                <p className="font-outfit text-center text-lg w-full capitalize font-semibold">{frenchName}</p>
-            </div>
+        onClick={handleClick}
+        className="relative w-1/6 bg-gradient-to-b from-transparent via-white to-gray-200 flex flex-col shadow-lg rounded-xl cursor-pointer hover:shadow-blue-200 transition">
+        
+        {/* Texte derrière l'image */}
+        <p className="w-full text-center absolute text-6xl font-bold text-gray-300 top-14 left-0 z-10 select-none pointer-events-none">
+            #{id}
+        </p>
+    
+        {/* Image devant */}
+        <div className="z-30">
+            <img src={image} className="scale-88" alt={frenchName} />
         </div>
+    
+        <div className="py-2 mt-4 w-full rounded-b-2xl">
+            <p className="font-outfit text-center text-lg w-full capitalize font-semibold">{frenchName}</p>
+        </div>
+    </div>
+    
     );
 }
 
