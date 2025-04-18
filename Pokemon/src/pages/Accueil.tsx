@@ -7,7 +7,7 @@ function Accueil() {
 
     const [data, setData] = useState<{ url: string; name: string }[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true); // 👈 ajout de l'état pour l'anim
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Animation de début (1.5 secondes)
@@ -19,7 +19,6 @@ function Accueil() {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0')
             .then(response => response.json())
             .then(json => setData(json.results))
-            .catch(error => console.error(error));
     }, []);
 
     const handleCardClick = async (id: string) => {
@@ -50,13 +49,13 @@ function Accueil() {
             });
 
         } catch (error) {
-            console.error("❌ Erreur lors du chargement des données Pokémon :", error);
+            console.error(" Erreur lors du chargement des données Pokémon :", error);
         }
     };
 
     return (
         <>
-            {/* 👇 Animation de démarrage avec deux boîtes rouges */}
+            {/* Animation de démarrage */}
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex flex-col">
                     <div className="bg-red-500 h-1/2 w-screen animate-slide-up relative z-30" >
@@ -70,11 +69,8 @@ function Accueil() {
                 <div className="w-screen">
 
 
-                    <div className="max-w-[1100px] w-full mx-auto mt-18">
+                    <div className="max-w-[1100px] w-full mx-auto mt-20">
 
-                        <div className="w-full flex justify-center items-center py-4">
-                            <input type="search" className="input input-rounded w-[500px]" placeholder="Rechercher" />
-                        </div>
                         {data ? (
                             <div className="flex flex-wrap gap-y-4 gap-x-2 justify-evenly px-4">
                                 {data.map((pokemon: { url: string; name: string }, index: number) => {
