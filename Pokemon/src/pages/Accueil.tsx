@@ -59,7 +59,7 @@ function Accueil() {
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex flex-col">
                     <div className="bg-red-500 h-1/2 w-screen animate-slide-up relative z-30" >
-                        <img src="./public/Poké_Ball_icon.png" width={300} className="absolute -bottom-36 right-145 z-40" alt="" />
+                        <img src="./public/Poke_Ball_icon.png" width={300} className="absolute -bottom-36 right-145 z-40" alt="" />
                     </div>
                     <div className="bg-red-500 h-1/2 w-screen animate-slide-down z-20" />
                 </div>
