@@ -59,7 +59,7 @@ function Accueil() {
             {isLoading && (
                 <div className="fixed inset-0 z-50 flex flex-col">
                     <div className="bg-red-500 h-1/2 w-screen animate-slide-up relative z-30" >
-                        <img src="./public/Poke_Ball_icon.png" width={300} className="absolute -bottom-36 right-145 z-40" alt="" />
+                        <img src="Poke_Ball_icon.png" width={300} className="absolute -bottom-36 right-145 z-40" alt="" />
                     </div>
                     <div className="bg-red-500 h-1/2 w-screen animate-slide-down z-20" />
                 </div>
@@ -102,7 +102,7 @@ function Accueil() {
                             </h2>
                             <p className="text-center text-gray-600 italic mx-4 mt-2">{selectedPokemon.description}</p>
                             <div className="flex justify-center mt-4 relative">
-                                <img src="./public/Pokeball.png" className="z-10 invert-10 w-60 absolute bottom-0" alt="" />
+                                <img src="Pokeball.png" className="z-10 invert-10 w-60 absolute bottom-0" alt="" />
                                 <img src={selectedPokemon.image} width={230} className="z-20" alt={selectedPokemon.name} />
                             </div>
 
@@ -143,7 +143,7 @@ function Accueil() {
                         </>
                     ) : (
                         <div className="text-center flex w-full h-[80vh] justify-center items-center text-lg text-gray-400 flex flex-col">
-                            <img src="./public/Silhouette.png" className="z-10 invert-10 w-50" alt="" />
+                            <img src="Silhouette.png" className="z-10 invert-10 w-50" alt="" />
                             <p>Clique sur un Pokémon !</p>
                         </div>
                     )}
